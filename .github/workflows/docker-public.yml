@@ -25,15 +25,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Docker Image Artifact Download
-      # You may pin to the exact commit or the version.
-      # uses: ishworkh/docker-image-artifact-download@2587a4982f53fa961b96103feb4d5b064cb258eb
-        uses: ishworkh/docker-image-artifact-download@v1
-        with:
-          # Docker image to download
-          image: docker.pkg.github.com/creeds-streaming/nginx-rtmp-with-auth-request-docker/nginx-rtmp-wit-auth-request-docker:latest
-
       - uses: actions/checkout@v2
+      
       - name: Test Rtmp Auth Server
         run: |
           if [ -f docker-compose.test.yml ]; then
@@ -44,6 +37,10 @@ jobs:
           fi
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        
+      - name: TEST
+        run: docker system info | grep -E 'Username|Registry'
+      
 
       - name: Test Rtmp Server
         run: |
@@ -73,7 +70,10 @@ jobs:
         run: docker-compose build --tag $RTMP_AUTH_IMAGE_NAME
 
       #LOGIN WAS HERE
-
+      - name: Log into registry
+        # This is where you will update the PAT to GITHUB_TOKEN
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          
       - name: Push Rtmp server image 
         run: |
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$RTMP_SERVER_IMAGE_NAME
