@@ -31,9 +31,9 @@ jobs:
         run: docker pull wordpress:latest
       
       - name: Log into registry 
-        # This is where you will update the PAT to GITHUB_TOKEN
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
+        # FUCK THIS SHIT I AM DONE, pls let me sleep
+        run: docker login -u $GITHUB_USERNAME -p $GITHUB_TOKEN docker.pkg.github.com
+        
       - name: Test Rtmp Server
         run: |
           if [ -f docker-compose.test.yml ]; then
