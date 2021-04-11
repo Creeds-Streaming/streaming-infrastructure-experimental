@@ -32,7 +32,7 @@ jobs:
       
       - name: Log into registry 
         # FUCK THIS SHIT I AM DONE, pls let me sleep
-        run: docker login -u $GITHUB_USERNAME -p $GITHUB_TOKEN docker.pkg.github.com
+        run: docker login -u CreedsCode -p $GITHUB_TOKEN docker.pkg.github.com
         
       - name: Test Rtmp Server
         run: |
