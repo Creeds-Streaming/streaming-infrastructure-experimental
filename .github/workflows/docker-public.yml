@@ -26,15 +26,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+          
+      - name: LOL
+        run: docker pull wordpress:latest
+      
+      - name: Log into registry and get image
+        # This is where you will update the PAT to GITHUB_TOKEN
+        run: | 
+            docker pull docker.pkg.github.com/creeds-streaming/nginx-rtmp-with-auth-request-docker/nginx-rtmp-wit-auth-request-docker:latest
+            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      - name: Test Rtmp Auth Server
-        run: |
-          if [ -f docker-compose.test.yml ]; then
-            docker-compose --file docker-compose.test.yml build
-            docker-compose --file docker-compose.test.yml run sut
-          else
-            docker build . --file expressAuth/Dockerfile
-          fi
+          
+      - name: TEST
+        run: docker system info | grep -E 'Username|Registry'
+      
 
       - name: Test Rtmp Server
         run: |
@@ -44,7 +49,15 @@ jobs:
           else
             docker build . --file rtmpServer/Dockerfile
           fi
-
+          
+      - name: Test Rtmp Auth Server
+        run: |
+          if [ -f docker-compose.test.yml ]; then
+            docker-compose --file docker-compose.test.yml build
+            docker-compose --file docker-compose.test.yml run sut
+          else
+            docker build . --file expressAuth/Dockerfile
+          fi
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
@@ -63,9 +76,12 @@ jobs:
       - name: Build Rtmp Auth Server image
         run: docker-compose build --tag $RTMP_AUTH_IMAGE_NAME
 
-      - name: Log into registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
+      #LOGIN WAS HERE
+      - name: Log into registry and get image
+        # This is where you will update the PAT to GITHUB_TOKEN
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin && /
+            docker pull docker.pkg.github.com/creeds-streaming/nginx-rtmp-with-auth-request-docker/nginx-rtmp-wit-auth-request-docker:latest
+          
       - name: Push Rtmp server image 
         run: |
           IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$RTMP_SERVER_IMAGE_NAME
