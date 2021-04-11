@@ -30,18 +30,11 @@ jobs:
       - name: LOL
         run: docker pull wordpress:latest
       
-      - name: Log into registry and get image
+      - name: Log into registry 
         # This is where you will update the PAT to GITHUB_TOKEN
-        run: | 
-            docker pull docker.pkg.github.com/creeds-streaming/nginx-rtmp-with-auth-request-docker/nginx-rtmp-wit-auth-request-docker:latest
-            echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-          
-      - name: TEST
-        run: docker system info | grep -E 'Username|Registry'
-      
-
-      - name: Test Rtmp Server
+- name: Test Rtmp Server
         run: |
           if [ -f docker-compose.test.yml ]; then
             docker-compose --file docker-compose.test.yml build
