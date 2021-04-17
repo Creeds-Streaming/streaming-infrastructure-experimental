@@ -1,6 +1,6 @@
 [submodule "base-auth"]
  path = base-auth
- url = https://github.com/Creeds-Streaming/base-auth
+ url = git@github.com:Creeds-Streaming/base-auth.git
 [submodule "base-rtmp"]
  path = base-rtmp
- url = https://github.com/Creeds-Streaming/base-rtmp
+ url = git@github.com:Creeds-Streaming/base-rtmp.git
