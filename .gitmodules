@@ -1,0 +1,6 @@
+[submodule "base-auth"]
+ path = base-auth
+ url = https://github.com/Creeds-Streaming/base-auth
+[submodule "base-rtmp"]
+ path = base-rtmp
+ url = https://github.com/Creeds-Streaming/base-rtmp
