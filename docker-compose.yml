@@ -2,12 +2,12 @@ version: "3.3"
 services:
   rtmp:
     container_name: rtmp_server
-    build: ./rtmpServer
+    build: ./base-rtmp
     ports:
       - "1935:1935"
       - "80:8080"
     volumes:
       - ./data:/tmp/hls
   auth:
-    build: ./expressAuth
+    build: ./base-auth
     container_name: auth_server
